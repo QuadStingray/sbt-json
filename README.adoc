@@ -1,0 +1,3 @@
+# SBT Json
+
+SBT Plugin to read from Json Files.
