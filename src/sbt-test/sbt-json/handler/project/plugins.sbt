@@ -1,5 +1,5 @@
-//val pluginVersion = System.getProperty("plugin.version")
- val pluginVersion = "0.1.0-SNAPSHOT"
+val pluginVersion = System.getProperty("plugin.version")
+// val pluginVersion = "0.1.0-SNAPSHOT"
 
 if (pluginVersion == null) {
   throw new RuntimeException(

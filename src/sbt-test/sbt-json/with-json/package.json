@@ -1,0 +1,13 @@
+{
+  "name": "test-system",
+  "version": "1.2.2.snapshot",
+  "organization": "dev.quadstingray",
+  "number": 0,
+  "array" : [
+    "hello",
+    "world"
+  ],
+  "directories": {
+    "doc": "docs"
+  }
+}
