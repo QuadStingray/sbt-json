@@ -1,30 +1,12 @@
-
 {
-  "name": "mongocamp-server",
+  "name": "test-system",
   "version": "1.2.2.snapshot",
-  "description": "",
+  "number": 0,
+  "array" : [
+    "hello",
+    "world"
+  ],
   "directories": {
     "doc": "docs"
-  },
-  "scripts": {
-    "docs:dev": "vitepress dev docs",
-    "docs:build": "vitepress build docs",
-    "docs:serve": "vitepress serve docs --port 5555",
-    "api-docs-codegen": "openapi-generator-cli generate -i http://0.0.0.0:8080/docs/docs.yaml -g markdown -o ./docs/rest",
-    "api-codegen": "openapi-generator-cli generate -i http://0.0.0.0:8080/docs/docs.yaml -o ./src/test/scala/dev/mongocamp/server/client-project -g scala-sttp --additional-properties=mainPackage=dev.mongocamp.server.client,jsonLibrary=circe,dateLibrary=joda"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/MongoCamp/mongocamp-server.git"
-  },
-  "author": "info@mongocamp.dev",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/MongoCamp/mongocamp-server/issues"
-  },
-  "homepage": "https://github.com/MongoCamp/mongocamp-server#readme",
-  "devDependencies": {
-    "vitepress": "^1.0.0-alpha.2",
-    "@openapitools/openapi-generator-cli": "^2.4.26"
   }
 }

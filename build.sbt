@@ -17,14 +17,26 @@ publishMavenStyle := false
 
 scalaVersion := crossScalaVersions.value.last
 
-crossScalaVersions := List("2.12.1")
+crossScalaVersions := List("2.12.17")
 
 crossSbtVersions := Vector("1.7.2")
 
-console / initialCommands := "import dev.quadstingray.sbt.json._"
+initialCommands := "import dev.quadstingray.sbt.json._"
 
-// libraryDependencies += "com.sfxcode.sapphire" % "sapphire-data" % "2.0.0"
+initialCommands := "import dev.quadstingray.sbt.json.Json._"
+
+initialCommands := "import dev.quadstingray.sbt.json.JsonPlugin.autoImport._"
+
+initialCommands := "import dev.quadstingray.sbt.json.JsonPlugin._"
+
+libraryDependencies += "com.github.pathikrit" %% "better-files" % "3.9.1"
 
 libraryDependencies += "org.json4s" %% "json4s-native" % "4.0.6"
+
+libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.9.5"
+
+libraryDependencies += "joda-time" % "joda-time" % "2.12.0"
+
+libraryDependencies += "org.scalameta" %% "munit" % "0.7.29" % Test
 
 

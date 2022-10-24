@@ -1,21 +1,28 @@
-import dev.quadstingray.sbt.json.Json
-import scala.reflect.io.File
-
 name := "simple-json"
 
-organization := "dev.quadstingray"
+organization := jsonHandler.value.stringValue("second.json", "organization")
 
-version := "0.1"
+version := jsonHandler.value.stringValue("package.json", "version")
 
 scalaVersion := "2.12.10"
 
 mainClass := Option("com.quadstingray.json.sample.HelloApp")
 
-jsonFiles += file("package.json")
+jsonFiles += (baseDirectory.value / "second.json")
 
 TaskKey[Unit]("check") := {
-  val version = Json.fromJson("package.json", "version")
-  if (!"1.2.2.snapshot".equals(version)) {
-    throw new Exception(s"readed value is ${version}")
+  val jsonVersion = jsonHandler.value.stringValue("package.json", "version")
+  if (!"1.2.2.snapshot".equals(jsonVersion)) {
+    throw new Exception(s"json read version value is ${jsonVersion}")
+  }
+  val jsonOrganization = jsonHandler.value.stringValue("second.json", "organization")
+  if (!"dev.quadstingray".equals(jsonOrganization)) {
+    throw new Exception(s"json read organization value is ${jsonOrganization}")
+  }
+  if (!"1.2.2.snapshot".equals(version.value)) {
+    throw new Exception(s"version is: ${version.value}")
+  }
+  if (!"dev.quadstingray".equals(organization.value)) {
+    throw new Exception(s"organization is: ${organization.value}")
   }
 }
