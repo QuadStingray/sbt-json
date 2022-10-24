@@ -92,6 +92,11 @@ class JsonHandler(files: Seq[sbt.File]) extends LazyLogging {
     json.doubleOption(key)
   }
 
+  def write(fileName: String): Unit = {
+    val json: Json = getRegisteredJson(fileName)
+    json.write
+  }
+
   private def getRegisteredJson(fileName: String) = {
     internalMap.getOrElse(fileName, throw new FileNotFoundException(s"$fileName not registered"))
   }

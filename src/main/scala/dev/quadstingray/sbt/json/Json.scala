@@ -38,10 +38,18 @@ case class Json(file: File, jsonMap: mutable.Map[String, Any]) {
   def updateValue(key: String, value: Any): Unit = {
     val keyMapElement = findMapWithKey(key, jsonMap).getOrElse(throw new java.util.NoSuchElementException(s"key not found: $key in $file"))
     if (value.isInstanceOf[Map[String, Any]]) {
-      keyMapElement._2.put(key, convertToMutableMap(value.asInstanceOf[Map[String, Any]]))
+      keyMapElement._2.put(keyMapElement._1, convertToMutableMap(value.asInstanceOf[Map[String, Any]]))
     } else {
-      keyMapElement._2.put(key, value)
+      keyMapElement._2.put(keyMapElement._1, value)
     }
+  }
+
+  def write(): Unit = {
+    implicit val formats: DefaultFormats.type = DefaultFormats
+    val prettyJsonString = org.json4s.native.Serialization.writePretty(jsonMap)
+    file.delete()
+    file.createFile()
+    file.append(prettyJsonString)
   }
 
   def value(key: String): Any = {
