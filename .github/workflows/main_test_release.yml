@@ -22,7 +22,7 @@ jobs:
           distribution: 'corretto'
           java-version: ${{ matrix.java }}
       - name: Run tests
-        run:  v
+        run:  sbt test
   scripted-test:
     runs-on: ubuntu-latest
     strategy:
@@ -73,6 +73,6 @@ jobs:
           PGP_PASSPHRASE: ${{ secrets.PGP_PASSWORD }}
           PGP_SECRET: ${{ secrets.PGP_SECRET_KEY }}
         run: |
-          git config --global user.email "ci@mongocamp.dev"
-          git config --global user.name "MongoCamp CI"
+          git config --global user.email "ci@quadstingray.dev"
+          git config --global user.name "QuadStingray CI"
           sbt ci-release
