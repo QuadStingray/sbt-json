@@ -38,7 +38,9 @@ jobs:
       - name: Run tests
         run: sbt ^scripted
   release:
-    needs: test
+    needs:
+      - scripted-test
+      - unit-test
     runs-on: ubuntu-latest
     steps:
       - name: Git Checkout
