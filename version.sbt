@@ -1,1 +1,1 @@
-version := "0.6.0"
+ThisBuild / version := jsonHandler.value.stringValue("package.json", "version")

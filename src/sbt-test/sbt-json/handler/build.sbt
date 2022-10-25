@@ -9,6 +9,7 @@ scalaVersion := "2.12.10"
 mainClass := Option("com.quadstingray.json.sample.HelloApp")
 
 jsonFiles += (baseDirectory.value / "second.json")
+jsonFiles += (baseDirectory.value / "package.json")
 
 TaskKey[Unit]("check") := {
   val jsonVersion = jsonHandler.value.stringValue("package.json", "version")

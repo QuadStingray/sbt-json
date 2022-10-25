@@ -1,8 +1,8 @@
 package dev.quadstingray.sbt.json
 
-import dev.quadstingray.sbt.json.JsonPlugin.autoImport.{ jsonFiles, jsonHandler }
-import sbt.Keys.{ baseDirectory, sLog }
-import sbt.{ AutoPlugin, Def, _ }
+import dev.quadstingray.sbt.json.JsonPlugin.autoImport.{jsonFiles, jsonHandler}
+import sbt.Keys.sLog
+import sbt.{AutoPlugin, Def, _}
 
 object JsonPlugin extends AutoPlugin {
   override val trigger: PluginTrigger = allRequirements
@@ -16,7 +16,7 @@ object JsonPlugin extends AutoPlugin {
 
   override val projectSettings: Seq[Def.Setting[_]] = {
     Seq(
-      jsonFiles := Seq(baseDirectory.value / "package.json"),
+      jsonFiles := Seq(),
       jsonHandler := {
         JsonLogger.sbtLogger = sLog.value
         new JsonHandler(jsonFiles.value)

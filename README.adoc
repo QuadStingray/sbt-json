@@ -9,8 +9,10 @@ Add to your project/plugins.sbt
 ```
 
 ### Use the JsonHandler
-By default, the package.json in your Root-Folder is inserted in the JsonHandler.
+Add to you `build.sbt` file.
+
 ```sbt
+jsonFiles += (baseDirectory.value / "package.json")
 version := jsonHandler.value.stringValue("package.json", "version")
 ```
 

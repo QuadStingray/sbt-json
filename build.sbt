@@ -43,4 +43,4 @@ libraryDependencies += "joda-time" % "joda-time" % "2.12.0"
 
 libraryDependencies += "org.scalameta" %% "munit" % "0.7.29" % Test
 
-
+jsonFiles += (baseDirectory.value / "package.json")

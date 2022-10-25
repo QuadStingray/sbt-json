@@ -93,9 +93,14 @@ class JsonHandler(files: Seq[sbt.File]) extends LazyLogging {
     json.doubleOption(key)
   }
 
+  def updateValue(fileName: String, key: String, value: Any): Unit = {
+    val json: JsonFile = getRegisteredJson(fileName)
+    json.updateValue(key, value)
+  }
+
   def write(fileName: String): Unit = {
     val json: JsonFile = getRegisteredJson(fileName)
-    json.write
+    json.write()
   }
 
   private def getRegisteredJson(fileName: String) = {
