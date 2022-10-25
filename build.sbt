@@ -3,8 +3,6 @@ name := "sbt-json"
 
 organization := "dev.quadstingray"
 
-version := "0.5.0"
-
 homepage := Some(url("https://quadstingray.github.io/sbt-json/"))
 
 scmInfo := Some(ScmInfo(url("https://github.com/QuadStingray/sbt-json"), "https://github.com/QuadStingray/sbt-json.git"))
