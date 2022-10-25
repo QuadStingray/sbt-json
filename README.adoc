@@ -21,8 +21,11 @@ organization := jsonHandler.value.stringValue("second.json", "organization")
 ```
 
 ### Direct JsonFile
+As alternative you can import and use JsonFile from your Code.
 
 ```sbt
+import dev.quadstingray.sbt.json.JsonFile
+
 val json = JsonFile(file("package.json"))
 
 organization := json.stringValue("organization")

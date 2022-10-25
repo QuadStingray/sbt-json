@@ -13,7 +13,7 @@ licenses += ("Apache-2.0", url("https://github.com/QuadStingray/sbt-json/blob/ma
 
 description := "sbt plugin for to load properties in sbt process from json files."
 
-publishMavenStyle := false
+publishMavenStyle := true
 
 scalaVersion := crossScalaVersions.value.last
 
