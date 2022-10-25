@@ -29,21 +29,18 @@ val addGithubRelease = ReleaseStep(action = st => {
 })
 
 val setToMyNextVersion = ReleaseStep(action = st => {
-  setMyVersion(st.get(versions).get._2, st)
+  val newVersion = version.replace("-SNAPSHOT", ".snapshot")
+  jsonHandler.value.updateValue("package.json", "version", newVersion)
+  jsonHandler.value.write("package.json")
   st
 })
 
 val setToMyReleaseVersion = ReleaseStep(action = st => {
-  setMyVersion(st.get(versions).get._1, st)
-  st
-})
-
-def setMyVersion(version: String, state: State): Unit = {
-  state.log.warn(s"Set Version in package.json  to $version")
   val newVersion = version.replace("-SNAPSHOT", ".snapshot")
   jsonHandler.value.updateValue("package.json", "version", newVersion)
   jsonHandler.value.write("package.json")
-}
+  st
+})
 
 releaseNextCommitMessage := s"ci: update version after release"
 releaseCommitMessage := s"ci: prepare release of version ${runtimeVersion.value}"
