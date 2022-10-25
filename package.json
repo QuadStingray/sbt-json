@@ -1,6 +1,6 @@
 {
-  "version": "0.6.2",
-  "scripts": {
-    "generate-changelog": "conventional-changelog -p conventionalcommits -i CHANGELOG.md -s -r 0 -n ci-tools/changelog-cli/writer.js"
+  "version" : "0.6.2",
+  "scripts" : {
+    "generate-changelog" : "conventional-changelog -p conventionalcommits -i CHANGELOG.md -s -r 0 -n ci-tools/changelog-cli/writer.js"
   }
 }

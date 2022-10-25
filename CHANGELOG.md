@@ -1,3 +1,5 @@
+### [0.6.2](https://github.com/QuadStingray/sbt-json/compare/v0.6.1...v0.6.2) (2022-10-25)
+
 ### [0.6.1](https://github.com/QuadStingray/sbt-json/compare/v0.1.0-SNAPSHOT...v0.6.1) (2022-10-25)
 
 
