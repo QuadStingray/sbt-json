@@ -2,9 +2,7 @@ import sbtrelease.ReleasePlugin.autoImport.ReleaseKeys.versions
 import sbtrelease.ReleasePlugin.autoImport.ReleaseTransformations._
 import sbtrelease.ReleasePlugin.runtimeVersion
 
-import scala.io.Source
 import scala.sys.process._
-import scala.tools.nsc.io.File
 
 val gitAddAllTask = ReleaseStep(action = st => {
   "git add .".!
@@ -42,15 +40,9 @@ val setToMyReleaseVersion = ReleaseStep(action = st => {
 
 def setMyVersion(version: String, state: State): Unit = {
   state.log.warn(s"Set Version in package.json  to $version")
-  // val packageJsonFile = File("package.json")
-  // val source = Source.fromFile(packageJsonFile.toURI)
-  // val orgContent = source.mkString
-  // val newVersion = version.replace("-SNAPSHOT", ".snapshot")
-  // val newVersionString = "\"version\": \"%s\",".format(newVersion)
-  // val packageJsonContent = orgContent.replaceAll("\"version\": \"(.*?)\",", newVersionString)
-  // packageJsonFile.delete()
-  // packageJsonFile.writeAll(packageJsonContent)
-  // state.log.debug(packageJsonContent)
+  val newVersion = version.replace("-SNAPSHOT", ".snapshot")
+  jsonHandler.value.updateValue("package.json", "version", newVersion)
+  jsonHandler.value.write("package.json")
 }
 
 releaseNextCommitMessage := s"ci: update version after release"
