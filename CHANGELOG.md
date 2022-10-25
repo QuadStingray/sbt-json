@@ -1,4 +1,11 @@
-##  (2022-10-25)
+### [0.6.1](https://github.com/QuadStingray/sbt-json/compare/v0.1.0-SNAPSHOT...v0.6.1) (2022-10-25)
+
+
+### Features
+
+* Add missing `updateValue` methode to JsonHandler ([c22e52a](https://github.com/QuadStingray/sbt-json/commit/c22e52ad9cd0cc787f8e018aa050c9f915ad3846))
+
+## [0.1.0-SNAPSHOT](https://github.com/QuadStingray/sbt-json/compare/3073436cbd26825c52752ea2a84395302809aa66...v0.1.0-SNAPSHOT) (2022-10-25)
 
 
 ### Bug Fixes

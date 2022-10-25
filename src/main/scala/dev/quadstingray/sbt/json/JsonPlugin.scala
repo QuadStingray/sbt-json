@@ -1,8 +1,8 @@
 package dev.quadstingray.sbt.json
 
-import dev.quadstingray.sbt.json.JsonPlugin.autoImport.{jsonFiles, jsonHandler}
+import dev.quadstingray.sbt.json.JsonPlugin.autoImport.{ jsonFiles, jsonHandler }
 import sbt.Keys.sLog
-import sbt.{AutoPlugin, Def, _}
+import sbt.{ AutoPlugin, Def, _ }
 
 object JsonPlugin extends AutoPlugin {
   override val trigger: PluginTrigger = allRequirements
