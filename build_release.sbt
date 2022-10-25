@@ -40,7 +40,7 @@ val setToMyReleaseVersion = ReleaseStep(action = st => {
   st
 })
 
-zdef setMyVersion(version: String, state: State): Unit = {
+def setMyVersion(version: String, state: State): Unit = {
   state.log.warn(s"Set Version in package.json  to $version")
   // val packageJsonFile = File("package.json")
   // val source = Source.fromFile(packageJsonFile.toURI)
