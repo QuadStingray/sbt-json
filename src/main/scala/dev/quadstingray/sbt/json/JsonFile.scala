@@ -1,17 +1,18 @@
 package dev.quadstingray.sbt.json
 
 import better.files.File
-import dev.quadstingray.sbt.json.Json.convertToMutableMap
+import dev.quadstingray.sbt.json.JsonFile.{convertJsonToString, convertToMutableMap}
+import io.circe.parser.*
+import io.circe.syntax.*
 import org.joda.time.DateTime
-import org.json4s.DefaultFormats
 
 import java.util.Date
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 
-case class Json(file: File, jsonMap: mutable.Map[String, Any]) {
+case class JsonFile(file: File, jsonMap: mutable.LinkedHashMap[String, Any]) {
 
-  private def findMapWithKey(key: String, map: mutable.Map[String, Any]): Option[(String, mutable.Map[String, Any])] = {
+  private def findMapWithKey(key: String, map: mutable.LinkedHashMap[String, Any]): Option[(String, mutable.LinkedHashMap[String, Any])] = {
     if (map.contains(key)) {
       Some((key, map))
     } else {
@@ -26,7 +27,7 @@ case class Json(file: File, jsonMap: mutable.Map[String, Any]) {
       })
       parentKeys.flatMap(internalKey => {
         if (map.contains(internalKey)) {
-          val internalMap = map(internalKey).asInstanceOf[mutable.Map[String, Any]]
+          val internalMap = map(internalKey).asInstanceOf[mutable.LinkedHashMap[String, Any]]
           findMapWithKey(key.replace(s"$internalKey.", ""), internalMap)
         } else {
           None
@@ -45,10 +46,9 @@ case class Json(file: File, jsonMap: mutable.Map[String, Any]) {
   }
 
   def write(): Unit = {
-    implicit val formats: DefaultFormats.type = DefaultFormats
-    val prettyJsonString = org.json4s.native.Serialization.writePretty(jsonMap)
     file.delete()
     file.createFile()
+    val prettyJsonString = convertJsonToString(this)
     file.append(prettyJsonString)
   }
 
@@ -202,9 +202,19 @@ case class Json(file: File, jsonMap: mutable.Map[String, Any]) {
 
 }
 
-object Json {
-  private def convertToMutableMap(map: Map[String, Any]): mutable.Map[String, Any] = {
-    val mutableMap = mutable.Map[String, Any]()
+object JsonFile extends CirceParsingHelper {
+
+  private def checkAndValidate(map : mutable.LinkedHashMap[String, Any]): mutable.LinkedHashMap[String, Any] = {
+    map.foreach(element => {
+      if (element._2.isInstanceOf[Map[String, Any]]) {
+        map.put(element._1, convertToMutableMap(element._2.asInstanceOf[Map[String, Any]]))
+      }
+    })
+    map
+  }
+
+  private def convertToMutableMap(map: Map[String, Any]): mutable.LinkedHashMap[String, Any] = {
+    val mutableMap = mutable.LinkedHashMap[String, Any]()
     map.foreach(element => {
       if (element._2.isInstanceOf[Map[String, Any]]) {
         mutableMap.put(element._1, convertToMutableMap(element._2.asInstanceOf[Map[String, Any]]))
@@ -215,11 +225,16 @@ object Json {
     mutableMap
   }
 
-  def apply(file: sbt.File): Json = {
-    val bFile = File(file.toURI)
-    implicit val formats: DefaultFormats.type = DefaultFormats
-    val jsonMap = org.json4s.native.Serialization.read[Map[String, Any]](bFile.contentAsString)
-    Json(bFile, convertToMutableMap(jsonMap))
+  private def convertJsonToString(jsonFile: JsonFile): String = {
+    val prettyJsonString = jsonFile.jsonMap.asJson.toString()
+    prettyJsonString
   }
+  def apply(file: sbt.File): JsonFile = {
+    val bFile = File(file.toURI)
+    val jsonString = bFile.contentAsString
+    val jsonMap = decode[mutable.LinkedHashMap[String, Any]](jsonString)
+    JsonFile(bFile, checkAndValidate(jsonMap.getOrElse(throw new Exception(s"Could not parse file ${bFile.toString()}"))))
+  }
+
 
 }

@@ -4,7 +4,7 @@ import munit.FunSuite
 import org.joda.time.DateTime
 
 class JsonSuite extends FunSuite {
-  val json: Json = Json(new sbt.File(getClass.getResource("/package.json").getPath))
+  val json: JsonFile = JsonFile(new sbt.File(getClass.getResource("/package.json").getPath))
 
   test("read String from simple json values from file") {
     assertEquals(json.stringValue("version"), "1.2.2.snapshot")

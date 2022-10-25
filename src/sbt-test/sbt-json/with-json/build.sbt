@@ -1,8 +1,8 @@
-import dev.quadstingray.sbt.json.Json
+import dev.quadstingray.sbt.json.JsonFile
 
 name := "simple-json"
 
-val json = Json(file("package.json"))
+val json = JsonFile(file("package.json"))
 
 organization := json.stringValue("organization")
 

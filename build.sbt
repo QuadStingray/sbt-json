@@ -3,6 +3,8 @@ name := "sbt-json"
 
 organization := "dev.quadstingray"
 
+version := "0.5.0"
+
 homepage := Some(url("https://quadstingray.github.io/sbt-json/"))
 
 scmInfo := Some(ScmInfo(url("https://github.com/QuadStingray/sbt-json"), "https://github.com/QuadStingray/sbt-json.git"))
@@ -31,7 +33,11 @@ initialCommands := "import dev.quadstingray.sbt.json.JsonPlugin._"
 
 libraryDependencies += "com.github.pathikrit" %% "better-files" % "3.9.1"
 
-libraryDependencies += "org.json4s" %% "json4s-native" % "4.0.6"
+val circeVersion = "0.14.3"
+
+libraryDependencies += "io.circe" %% "circe-core" % circeVersion
+
+libraryDependencies += "io.circe" %% "circe-parser" % circeVersion
 
 libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.9.5"
 

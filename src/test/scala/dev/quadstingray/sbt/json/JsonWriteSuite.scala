@@ -23,17 +23,17 @@ class JsonWriteSuite extends FunSuite {
   }
 
   test("read String from simple json values from file") {
-    val json: Json = Json(new sbt.File(s"$targetFolder/package.json"))
+    val json: JsonFile = JsonFile(new sbt.File(s"$targetFolder/package.json"))
     assertEquals(json.stringValue("version"), "1.2.2.snapshot")
     json.updateValue("version", "2.0.0")
     json.write()
     assertEquals(json.stringValue("version"), "2.0.0")
-    val json2: Json = Json(new sbt.File(s"$targetFolder/package.json"))
+    val json2: JsonFile = JsonFile(new sbt.File(s"$targetFolder/package.json"))
     assertEquals(json2.stringValue("version"), "2.0.0")
   }
 
   test("read String from json values with sub field") {
-    val json: Json = Json(new sbt.File(s"$targetFolder/package.json"))
+    val json: JsonFile = JsonFile(new sbt.File(s"$targetFolder/package.json"))
     assertEquals(json.stringValue("test.doc"), "Hello")
     assertEquals(json.stringValue("directories.doc"), "docs")
     assertEquals(json.stringValue("test.help.me"), "wanted")
@@ -47,7 +47,7 @@ class JsonWriteSuite extends FunSuite {
     assertEquals(json.stringValue("directories.doc"), "your dir")
     assertEquals(json.stringValue("test.help.me"), "help is here")
     assertEquals(json.stringValue("hello.world.value"), "you see")
-    val json2: Json = Json(new sbt.File(s"$targetFolder/package.json"))
+    val json2: JsonFile = JsonFile(new sbt.File(s"$targetFolder/package.json"))
     assertEquals(json2.stringValue("test.doc"), "you see")
     assertEquals(json2.stringValue("directories.doc"), "your dir")
     assertEquals(json2.stringValue("test.help.me"), "help is here")
