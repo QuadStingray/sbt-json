@@ -21,7 +21,8 @@ class JsonHandler(files: Seq[sbt.File]) extends LazyLogging {
         JsonLogger.warn(s"$key loaded twice last loaded file: ${bFile.toString()}")
       }
       internalMap.put(key, JsonFile(file))
-    } catch {
+    }
+    catch {
       case e: Exception =>
         JsonLogger.error(s"could not read Map from ${file.toURI} with error ${e.getMessage}")
     }

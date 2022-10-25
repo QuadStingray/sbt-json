@@ -1,7 +1,7 @@
 package dev.quadstingray.sbt.json
 
 import better.files.File
-import dev.quadstingray.sbt.json.JsonFile.{convertJsonToString, convertToMutableMap}
+import dev.quadstingray.sbt.json.JsonFile.{ convertJsonToString, convertToMutableMap }
 import io.circe.parser.*
 import io.circe.syntax.*
 import org.joda.time.DateTime
@@ -15,24 +15,30 @@ case class JsonFile(file: File, jsonMap: mutable.LinkedHashMap[String, Any]) {
   private def findMapWithKey(key: String, map: mutable.LinkedHashMap[String, Any]): Option[(String, mutable.LinkedHashMap[String, Any])] = {
     if (map.contains(key)) {
       Some((key, map))
-    } else {
+    }
+    else {
       val parentKeys = ArrayBuffer[String]()
       var currentKey = ""
-      key.split('.').foreach(part => {
-        if (currentKey != "") {
-          currentKey = currentKey + "."
-        }
-        currentKey = currentKey + part
-        parentKeys += currentKey
-      })
-      parentKeys.flatMap(internalKey => {
-        if (map.contains(internalKey)) {
-          val internalMap = map(internalKey).asInstanceOf[mutable.LinkedHashMap[String, Any]]
-          findMapWithKey(key.replace(s"$internalKey.", ""), internalMap)
-        } else {
-          None
-        }
-      }).headOption
+      key
+        .split('.')
+        .foreach(part => {
+          if (currentKey != "") {
+            currentKey = currentKey + "."
+          }
+          currentKey = currentKey + part
+          parentKeys += currentKey
+        })
+      parentKeys
+        .flatMap(internalKey => {
+          if (map.contains(internalKey)) {
+            val internalMap = map(internalKey).asInstanceOf[mutable.LinkedHashMap[String, Any]]
+            findMapWithKey(key.replace(s"$internalKey.", ""), internalMap)
+          }
+          else {
+            None
+          }
+        })
+        .headOption
     }
   }
 
@@ -40,7 +46,8 @@ case class JsonFile(file: File, jsonMap: mutable.LinkedHashMap[String, Any]) {
     val keyMapElement = findMapWithKey(key, jsonMap).getOrElse(throw new java.util.NoSuchElementException(s"key not found: $key in $file"))
     if (value.isInstanceOf[Map[String, Any]]) {
       keyMapElement._2.put(keyMapElement._1, convertToMutableMap(value.asInstanceOf[Map[String, Any]]))
-    } else {
+    }
+    else {
       keyMapElement._2.put(keyMapElement._1, value)
     }
   }
@@ -154,15 +161,14 @@ case class JsonFile(file: File, jsonMap: mutable.LinkedHashMap[String, Any]) {
     val internalValue = value(key)
     if (internalValue != null) {
       new DateTime(internalValue.toString).toDate
-    } else {
+    }
+    else {
       throw new Exception(s"Value for Key $key is not an value of type List")
     }
   }
 
   def dateOption(key: String): Option[Date] = {
-    valueOption(key).map(internalValue => {
-      new DateTime(internalValue.toString).toDate
-    })
+    valueOption(key).map(internalValue => new DateTime(internalValue.toString).toDate)
   }
 
   def doubleValue(key: String): Double = {
@@ -204,7 +210,7 @@ case class JsonFile(file: File, jsonMap: mutable.LinkedHashMap[String, Any]) {
 
 object JsonFile extends CirceParsingHelper {
 
-  private def checkAndValidate(map : mutable.LinkedHashMap[String, Any]): mutable.LinkedHashMap[String, Any] = {
+  private def checkAndValidate(map: mutable.LinkedHashMap[String, Any]): mutable.LinkedHashMap[String, Any] = {
     map.foreach(element => {
       if (element._2.isInstanceOf[Map[String, Any]]) {
         map.put(element._1, convertToMutableMap(element._2.asInstanceOf[Map[String, Any]]))
@@ -218,7 +224,8 @@ object JsonFile extends CirceParsingHelper {
     map.foreach(element => {
       if (element._2.isInstanceOf[Map[String, Any]]) {
         mutableMap.put(element._1, convertToMutableMap(element._2.asInstanceOf[Map[String, Any]]))
-      } else {
+      }
+      else {
         mutableMap.put(element._1, element._2)
       }
     })
@@ -230,11 +237,10 @@ object JsonFile extends CirceParsingHelper {
     prettyJsonString
   }
   def apply(file: sbt.File): JsonFile = {
-    val bFile = File(file.toURI)
+    val bFile      = File(file.toURI)
     val jsonString = bFile.contentAsString
-    val jsonMap = decode[mutable.LinkedHashMap[String, Any]](jsonString)
+    val jsonMap    = decode[mutable.LinkedHashMap[String, Any]](jsonString)
     JsonFile(bFile, checkAndValidate(jsonMap.getOrElse(throw new Exception(s"Could not parse file ${bFile.toString()}"))))
   }
-
 
 }

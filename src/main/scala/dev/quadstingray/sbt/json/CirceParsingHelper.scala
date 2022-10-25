@@ -1,12 +1,11 @@
 package dev.quadstingray.sbt.json
 
 import io.circe.Decoder.Result
-import io.circe.{Decoder, Encoder, HCursor, Json}
+import io.circe.{ Decoder, Encoder, HCursor, Json }
 import org.joda.time.DateTime
 
 import java.util.Date
 import scala.collection.mutable
-
 
 trait CirceParsingHelper {
 
@@ -21,7 +20,6 @@ trait CirceParsingHelper {
 
     override def apply(c: HCursor): Result[DateTime] = Decoder.decodeString.map(s => new DateTime(s)).apply(c)
   }
-
 
   implicit val MapStringAnyFormat: Encoder[Map[String, Any]] with Decoder[Map[String, Any]] = new Encoder[Map[String, Any]] with Decoder[Map[String, Any]] {
     override def apply(a: Map[String, Any]): Json = encodeMapStringAny(a)
@@ -89,20 +87,20 @@ trait CirceParsingHelper {
 
   def encodeAnyToJson(a: Any, deepth: Int = 0): Json = {
     a match {
-      case s: String         => Json.fromString(s)
-      case b: Boolean        => Json.fromBoolean(b)
-      case l: Long           => Json.fromLong(l)
-      case i: Int            => Json.fromInt(i)
-      case bi: BigInt        => Json.fromBigInt(bi)
-      case bd: BigDecimal    => Json.fromBigDecimal(bd)
-      case d: Double         => Json.fromDoubleOrNull(d)
-      case f: Float          => Json.fromFloatOrNull(f)
-      case d: Date           => Encoder.encodeString.apply(d.toInstant.toString)
-      case d: DateTime       => Encoder.encodeString.apply(d.toInstant.toString)
-      case m: Map[String, _] => encodeMapStringAny(m)
+      case s: String                           => Json.fromString(s)
+      case b: Boolean                          => Json.fromBoolean(b)
+      case l: Long                             => Json.fromLong(l)
+      case i: Int                              => Json.fromInt(i)
+      case bi: BigInt                          => Json.fromBigInt(bi)
+      case bd: BigDecimal                      => Json.fromBigDecimal(bd)
+      case d: Double                           => Json.fromDoubleOrNull(d)
+      case f: Float                            => Json.fromFloatOrNull(f)
+      case d: Date                             => Encoder.encodeString.apply(d.toInstant.toString)
+      case d: DateTime                         => Encoder.encodeString.apply(d.toInstant.toString)
+      case m: Map[String, _]                   => encodeMapStringAny(m)
       case m: mutable.LinkedHashMap[String, _] => encodeLinkedMapStringAny(m)
-      case seq: Seq[_]       => Json.arr(seq.map(e => encodeAnyToJson(e, deepth)): _*)
-      case set: Set[_]       => Json.arr(set.map(e => encodeAnyToJson(e, deepth)).toList: _*)
+      case seq: Seq[_]                         => Json.arr(seq.map(e => encodeAnyToJson(e, deepth)): _*)
+      case set: Set[_]                         => Json.arr(set.map(e => encodeAnyToJson(e, deepth)).toList: _*)
       case product: Product =>
         val productElementNames = product.productIterator.toList
         val fieldMap = productElementNames

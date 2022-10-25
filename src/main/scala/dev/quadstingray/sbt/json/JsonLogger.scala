@@ -8,7 +8,8 @@ object JsonLogger extends LazyLogging {
   def error(message: => String): Unit = {
     if (sbtLogger != null) {
       sbtLogger.error(message)
-    } else {
+    }
+    else {
       logger.error(message)
     }
   }
@@ -16,7 +17,8 @@ object JsonLogger extends LazyLogging {
   def warn(message: => String): Unit = {
     if (sbtLogger != null) {
       sbtLogger.warn(message)
-    } else {
+    }
+    else {
       logger.warn(message)
     }
   }
@@ -24,7 +26,8 @@ object JsonLogger extends LazyLogging {
   def debug(message: => String): Unit = {
     if (sbtLogger != null) {
       sbtLogger.debug(message)
-    } else {
+    }
+    else {
       logger.debug(message)
     }
   }
@@ -32,7 +35,8 @@ object JsonLogger extends LazyLogging {
   def info(message: => String): Unit = {
     if (sbtLogger != null) {
       sbtLogger.info(message)
-    } else {
+    }
+    else {
       logger.info(message)
     }
   }
