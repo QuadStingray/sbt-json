@@ -1,3 +1,30 @@
 # SBT Json
 
-SBT Plugin to read from Json Files.
+This is an plugin to read from an JSON-File in your SBT Tasks. If you are using https://github.com/conventional-changelog/conventional-changelog[Conventional Changelog] you have to insert your version number in an package.json file. It is not comfortable to update your version at many points in your project. So this plugin supports you read the Version Number or other Settings from a JSON-File in your Build Process.
+
+## Usage
+Add to your project/plugins.sbt
+```sbt
+  addSbtPlugin("dev.quadstingray" % "sbt-json" % pluginVersion)
+```
+
+### Use the JsonHandler
+By default, the package.json in your Root-Folder is inserted in the JsonHandler.
+```sbt
+version := jsonHandler.value.stringValue("package.json", "version")
+```
+
+To add another Json-File to the Handler
+```sbt
+jsonFiles += (baseDirectory.value / "second.json")
+organization := jsonHandler.value.stringValue("second.json", "organization")
+```
+
+### Direct JsonFile
+
+```sbt
+val json = JsonFile(file("package.json"))
+
+organization := json.stringValue("organization")
+```
+
