@@ -1,6 +1,7 @@
 import sbtrelease.ReleasePlugin.autoImport.ReleaseKeys.versions
 import sbtrelease.ReleasePlugin.autoImport.ReleaseTransformations._
 import sbtrelease.ReleasePlugin.runtimeVersion
+import dev.quadstingray.sbt.json.JsonFile
 
 import scala.sys.process._
 
@@ -29,18 +30,22 @@ val addGithubRelease = ReleaseStep(action = st => {
 })
 
 val setToMyNextVersion = ReleaseStep(action = st => {
-  val newVersion = st.get(versions).get._2.replace("-SNAPSHOT", ".snapshot")
-  jsonHandler.value.updateValue("package.json", "version", newVersion)
-  jsonHandler.value.write("package.json")
+  setMyVersion(st.get(versions).get._2, st)
   st
 })
 
 val setToMyReleaseVersion = ReleaseStep(action = st => {
-  val newVersion = st.get(versions).get._2.replace("-SNAPSHOT", ".snapshot")
-  jsonHandler.value.updateValue("package.json", "version", newVersion)
-  jsonHandler.value.write("package.json")
+  setMyVersion(st.get(versions).get._1, st)
   st
 })
+
+def setMyVersion(version: String, state: State): Unit = {
+  state.log.warn(s"Set Version in package.json  to $version")
+  val json = JsonFile(file("package.json"))
+  val newVersion = version.replace("-SNAPSHOT", ".snapshot")
+  json.updateValue("version", newVersion)
+  json.write()
+}
 
 releaseNextCommitMessage := s"ci: update version after release"
 releaseCommitMessage := s"ci: prepare release of version ${runtimeVersion.value}"
