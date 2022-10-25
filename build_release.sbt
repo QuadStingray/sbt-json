@@ -50,7 +50,7 @@ zdef setMyVersion(version: String, state: State): Unit = {
   // val packageJsonContent = orgContent.replaceAll("\"version\": \"(.*?)\",", newVersionString)
   // packageJsonFile.delete()
   // packageJsonFile.writeAll(packageJsonContent)
-  state.log.debug(packageJsonContent)
+  // state.log.debug(packageJsonContent)
 }
 
 releaseNextCommitMessage := s"ci: update version after release"
