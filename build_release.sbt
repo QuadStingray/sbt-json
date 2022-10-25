@@ -40,17 +40,16 @@ val setToMyReleaseVersion = ReleaseStep(action = st => {
   st
 })
 
-// todo: replace after first publish with own plugin style
-def setMyVersion(version: String, state: State): Unit = {
+zdef setMyVersion(version: String, state: State): Unit = {
   state.log.warn(s"Set Version in package.json  to $version")
-  val packageJsonFile = File("package.json")
-  val source = Source.fromFile(packageJsonFile.toURI)
-  val orgContent = source.mkString
-  val newVersion = version.replace("-SNAPSHOT", ".snapshot")
-  val newVersionString = "\"version\": \"%s\",".format(newVersion)
-  val packageJsonContent = orgContent.replaceAll("\"version\": \"(.*?)\",", newVersionString)
-  packageJsonFile.delete()
-  packageJsonFile.writeAll(packageJsonContent)
+  // val packageJsonFile = File("package.json")
+  // val source = Source.fromFile(packageJsonFile.toURI)
+  // val orgContent = source.mkString
+  // val newVersion = version.replace("-SNAPSHOT", ".snapshot")
+  // val newVersionString = "\"version\": \"%s\",".format(newVersion)
+  // val packageJsonContent = orgContent.replaceAll("\"version\": \"(.*?)\",", newVersionString)
+  // packageJsonFile.delete()
+  // packageJsonFile.writeAll(packageJsonContent)
   state.log.debug(packageJsonContent)
 }
 
