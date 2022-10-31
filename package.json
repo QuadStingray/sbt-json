@@ -1,5 +1,5 @@
 {
-  "version" : "0.6.3",
+  "version" : "0.6.4.snapshot",
   "scripts" : {
     "generate-changelog" : "conventional-changelog -p conventionalcommits -i CHANGELOG.md -s -r 0 -n ci-tools/changelog-cli/writer.js"
   }
