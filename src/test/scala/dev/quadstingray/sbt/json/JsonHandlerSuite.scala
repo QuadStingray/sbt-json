@@ -4,7 +4,13 @@ import munit.FunSuite
 import org.joda.time.DateTime
 
 class JsonHandlerSuite extends FunSuite {
-  val jsonHandler = new JsonHandler(List(new sbt.File(getClass.getResource("/package.json").getPath), new sbt.File(getClass.getResource("/second.json").getPath), new sbt.File(getClass.getResource("/second.json").getPath)))
+  val jsonHandler = new JsonHandler(
+    List(
+      new sbt.File(getClass.getResource("/package.json").getPath),
+      new sbt.File(getClass.getResource("/second.json").getPath),
+      new sbt.File(getClass.getResource("/second.json").getPath)
+    )
+  )
 
   test("read String from simple json values from file") {
     assertEquals(jsonHandler.stringValue("package.json", "version"), "1.2.2.snapshot")

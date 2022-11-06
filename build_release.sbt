@@ -41,22 +41,22 @@ val setToMyReleaseVersion = ReleaseStep(action = st => {
 
 def setMyVersion(version: String, state: State): Unit = {
   state.log.warn(s"Set Version in package.json  to $version")
-  val json = JsonFile(file("package.json"))
+  val json       = JsonFile(file("package.json"))
   val newVersion = version.replace("-SNAPSHOT", ".snapshot")
   json.updateValue("version", newVersion)
   json.write()
 }
 
 releaseNextCommitMessage := s"ci: update version after release"
-releaseCommitMessage := s"ci: prepare release of version ${runtimeVersion.value}"
+releaseCommitMessage     := s"ci: prepare release of version ${runtimeVersion.value}"
 
 commands += Command.command("ci-release")((state: State) => {
   val lowerCaseVersion = version.value.toLowerCase
   if (
     (lowerCaseVersion.contains("snapshot") ||
-      lowerCaseVersion.contains("beta") ||
-      lowerCaseVersion.contains("rc") ||
-      lowerCaseVersion.contains("m"))
+    lowerCaseVersion.contains("beta") ||
+    lowerCaseVersion.contains("rc") ||
+    lowerCaseVersion.contains("m"))
   ) {
     state
   }
@@ -101,15 +101,15 @@ ThisBuild / sonatypeCredentialHost := "s01.oss.sonatype.org"
 
 packageOptions += {
   Package.ManifestAttributes(
-    "Created-By" -> "Simple Build Tool",
-    "Built-By" -> "QuadStingray",
-    "Build-Jdk" -> System.getProperty("java.version"),
-    "Specification-Title" -> name.value,
-    "Specification-Version" -> version.value,
-    "Specification-Vendor" -> organization.value,
-    "Implementation-Title" -> name.value,
-    "Implementation-Version" -> version.value,
+    "Created-By"               -> "Simple Build Tool",
+    "Built-By"                 -> "QuadStingray",
+    "Build-Jdk"                -> System.getProperty("java.version"),
+    "Specification-Title"      -> name.value,
+    "Specification-Version"    -> version.value,
+    "Specification-Vendor"     -> organization.value,
+    "Implementation-Title"     -> name.value,
+    "Implementation-Version"   -> version.value,
     "Implementation-Vendor-Id" -> organization.value,
-    "Implementation-Vendor" -> organization.value
+    "Implementation-Vendor"    -> organization.value
   )
 }

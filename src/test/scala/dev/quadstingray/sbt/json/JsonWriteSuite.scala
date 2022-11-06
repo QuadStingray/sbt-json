@@ -16,7 +16,7 @@ class JsonWriteSuite extends FunSuite {
       fileToDelete.delete()
     }
     val resourceFile = getClass.getResource("/package.json").getPath
-    val sourceFile = better.files.File(resourceFile)
+    val sourceFile   = better.files.File(resourceFile)
     targetFolder.createDirectoryIfNotExists(createParents = true)
     val targetFile = sourceFile.copyToDirectory(targetFolder)
     targetFile
