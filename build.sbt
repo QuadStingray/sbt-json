@@ -38,7 +38,7 @@ libraryDependencies += "io.circe" %% "circe-parser" % circeVersion
 
 libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.9.5"
 
-libraryDependencies += "joda-time" % "joda-time" % "2.12.1"
+libraryDependencies += "joda-time" % "joda-time" % "2.12.2"
 
 libraryDependencies += "org.scalameta" %% "munit" % "0.7.29" % Test
 
