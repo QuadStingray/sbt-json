@@ -1,3 +1,10 @@
+### [0.6.4](https://github.com/QuadStingray/sbt-json/compare/v0.6.3...v0.6.4) (2023-01-08)
+
+
+### Maintenance
+
+* dependencyUpdates ([c040a3a](https://github.com/QuadStingray/sbt-json/commit/c040a3a031433406763ecf68721b49c7bec97513))
+
 ### [0.6.3](https://github.com/QuadStingray/sbt-json/compare/v0.6.2...v0.6.3) (2022-10-31)
 
 
