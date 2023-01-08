@@ -18,7 +18,7 @@ scalaVersion := crossScalaVersions.value.last
 
 crossScalaVersions := List("2.12.17")
 
-crossSbtVersions := Vector("1.7.2")
+crossSbtVersions := Vector("1.7.2", "1.8.2")
 
 initialCommands := "import dev.quadstingray.sbt.json._"
 
@@ -38,7 +38,7 @@ libraryDependencies += "io.circe" %% "circe-parser" % circeVersion
 
 libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.9.5"
 
-libraryDependencies += "joda-time" % "joda-time" % "2.12.1"
+libraryDependencies += "joda-time" % "joda-time" % "2.12.2"
 
 libraryDependencies += "org.scalameta" %% "munit" % "0.7.29" % Test
 
