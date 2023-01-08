@@ -1,3 +1,10 @@
+### [0.6.3](https://github.com/QuadStingray/sbt-json/compare/v0.6.2...v0.6.3) (2022-10-31)
+
+
+### Maintenance
+
+* update sbt from 1.7.2 to 1.7.3 ([574d2a1](https://github.com/QuadStingray/sbt-json/commit/574d2a18329c95214e39228b5b598a6825e0c509))
+
 ### [0.6.2](https://github.com/QuadStingray/sbt-json/compare/v0.6.1...v0.6.2) (2022-10-25)
 
 ### [0.6.1](https://github.com/QuadStingray/sbt-json/compare/v0.1.0-SNAPSHOT...v0.6.1) (2022-10-25)
