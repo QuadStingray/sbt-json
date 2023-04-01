@@ -28,9 +28,9 @@ initialCommands := "import dev.quadstingray.sbt.json.JsonPlugin.autoImport._"
 
 initialCommands := "import dev.quadstingray.sbt.json.JsonPlugin._"
 
-libraryDependencies += "com.github.pathikrit" %% "better-files" % "3.9.1"
+libraryDependencies += "com.github.pathikrit" %% "better-files" % "3.9.2"
 
-val circeVersion = "0.14.3"
+val circeVersion = "0.14.5"
 
 libraryDependencies += "io.circe" %% "circe-core" % circeVersion
 
