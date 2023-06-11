@@ -16,7 +16,7 @@ publishMavenStyle := true
 
 scalaVersion := crossScalaVersions.value.last
 
-crossScalaVersions := List("2.12.17")
+crossScalaVersions := List("2.12.18")
 
 crossSbtVersions := Vector("1.7.2", "1.8.2")
 
