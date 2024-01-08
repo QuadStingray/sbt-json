@@ -1,7 +1,7 @@
 package dev.quadstingray.sbt.json
 
 import better.files.File
-import dev.quadstingray.sbt.json.JsonFile.{ convertJsonToString, convertToMutableMap }
+import dev.quadstingray.sbt.json.JsonFile.{ convertJsonToString, convertToMutableMap, defaultNotFoundFunction }
 import io.circe.parser.*
 import io.circe.syntax.*
 import org.joda.time.DateTime
@@ -43,7 +43,7 @@ case class JsonFile(file: File, jsonMap: mutable.LinkedHashMap[String, Any]) {
   }
 
   def updateValue(key: String, value: Any): Unit = {
-    val keyMapElement = findMapWithKey(key, jsonMap).getOrElse(throw new java.util.NoSuchElementException(s"key not found: $key in $file"))
+    val keyMapElement: (String, mutable.LinkedHashMap[String, Any]) = findMapWithKey(key, jsonMap).getOrElse((key, jsonMap))
     if (value.isInstanceOf[Map[String, Any]]) {
       keyMapElement._2.put(keyMapElement._1, convertToMutableMap(value.asInstanceOf[Map[String, Any]]))
     }
@@ -59,26 +59,25 @@ case class JsonFile(file: File, jsonMap: mutable.LinkedHashMap[String, Any]) {
     file.append(prettyJsonString)
   }
 
-  def value(key: String): Any = {
-    val keyMapElement = findMapWithKey(key, jsonMap).getOrElse(throw new java.util.NoSuchElementException(s"key not found: $key in $file"))
-    keyMapElement._2(keyMapElement._1)
+  def value(key: String, notFoundFunction: String => Any = defaultNotFoundFunction(file)): Any = {
+    valueOption(key).getOrElse(notFoundFunction(key))
   }
 
   def valueOption(key: String): Option[Any] = {
-    val keyMapElement = findMapWithKey(key, jsonMap).getOrElse(throw new java.util.NoSuchElementException(s"key not found: $key in $file"))
-    keyMapElement._2.get(keyMapElement._1)
+    val response = findMapWithKey(key, jsonMap).flatMap(e => e._2.get(e._1))
+    response
   }
 
-  def stringValue(key: String): String = {
-    value(key).toString
+  def stringValue(key: String, notFoundFunction: String => String = defaultNotFoundFunction(file)): String = {
+    value(key, notFoundFunction).toString
   }
 
   def stringOption(key: String): Option[String] = {
     valueOption(key).map(_.toString)
   }
 
-  def stringListValue(key: String): List[String] = {
-    val internalValue = value(key)
+  def stringListValue(key: String, notFoundFunction: String => List[String] = defaultNotFoundFunction(file)): List[String] = {
+    val internalValue = value(key, notFoundFunction)
     internalValue match {
       case list: List[Any] =>
         list.map(_.toString)
@@ -87,8 +86,8 @@ case class JsonFile(file: File, jsonMap: mutable.LinkedHashMap[String, Any]) {
     }
   }
 
-  def longValue(key: String): Long = {
-    val internalValue = value(key)
+  def longValue(key: String, notFoundFunction: String => Long = defaultNotFoundFunction(file)): Long = {
+    val internalValue = value(key, notFoundFunction)
     internalValue match {
       case d: Double =>
         d.toLong
@@ -122,8 +121,8 @@ case class JsonFile(file: File, jsonMap: mutable.LinkedHashMap[String, Any]) {
     }
   }
 
-  def intValue(key: String): Int = {
-    val internalValue = value(key)
+  def intValue(key: String, notFoundFunction: String => Int = defaultNotFoundFunction(file)): Int = {
+    val internalValue = value(key, notFoundFunction)
     internalValue match {
       case d: Double =>
         d.toInt
@@ -157,8 +156,8 @@ case class JsonFile(file: File, jsonMap: mutable.LinkedHashMap[String, Any]) {
     }
   }
 
-  def dateValue(key: String): Date = {
-    val internalValue = value(key)
+  def dateValue(key: String, notFoundFunction: String => Date = defaultNotFoundFunction(file)): Date = {
+    val internalValue = value(key, notFoundFunction)
     if (internalValue != null) {
       new DateTime(internalValue.toString).toDate
     }
@@ -171,8 +170,8 @@ case class JsonFile(file: File, jsonMap: mutable.LinkedHashMap[String, Any]) {
     valueOption(key).map(internalValue => new DateTime(internalValue.toString).toDate)
   }
 
-  def doubleValue(key: String): Double = {
-    val internalValue = value(key)
+  def doubleValue(key: String, notFoundFunction: String => Double = defaultNotFoundFunction(file)): Double = {
+    val internalValue = value(key, notFoundFunction)
     internalValue match {
       case d: Double =>
         d
@@ -241,6 +240,10 @@ object JsonFile extends CirceParsingHelper {
     val jsonString = bFile.contentAsString
     val jsonMap    = decode[mutable.LinkedHashMap[String, Any]](jsonString)
     JsonFile(bFile, checkAndValidate(jsonMap.getOrElse(throw new Exception(s"Could not parse file ${bFile.toString()}"))))
+  }
+
+  def defaultNotFoundFunction[A <: Any](file: File)(key: String): A = {
+    throw new java.util.NoSuchElementException(s"key not found: $key in $file")
   }
 
 }
