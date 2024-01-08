@@ -50,4 +50,38 @@ class JsonSuite extends FunSuite {
     assertEquals(json.stringValue("hello.world.value"), "hello")
   }
 
+  test("read value from not existing json field") {
+    val notExistingKey = "does_not_exists"
+    intercept[NoSuchElementException] {
+      json.value(notExistingKey)
+    }
+    intercept[NoSuchElementException] {
+      json.dateValue(notExistingKey)
+    }
+    intercept[NoSuchElementException] {
+      json.stringValue(notExistingKey)
+    }
+    intercept[NoSuchElementException] {
+      json.longValue(notExistingKey)
+    }
+    assertEquals(json.stringOption(notExistingKey), None)
+    assertEquals(json.longOption(notExistingKey), None)
+    assertEquals(json.dateOption(notExistingKey), None)
+    assertEquals(json.valueOption(notExistingKey), None)
+  }
+
+  test("update values") {
+    val keyForUpdate = "keyForUpdate"
+    intercept[NoSuchElementException] {
+      json.stringValue(keyForUpdate)
+    }
+    json.updateValue(keyForUpdate, "hello my")
+    assertEquals(json.stringValue(keyForUpdate), "hello my")
+    assertEquals(json.stringValue("version"), "1.2.2.snapshot")
+
+    json.updateValue(keyForUpdate, "hello you")
+    assertEquals(json.stringValue(keyForUpdate), "hello you")
+
+  }
+
 }
