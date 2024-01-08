@@ -47,14 +47,6 @@ jobs:
         uses: actions/checkout@v3.0.0
         with:
           fetch-depth: 0
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2.2.1
-        with:
-          version: 6.0.2
-      - name: install conventional-changelog-cli
-        run: pnpm install -g conventional-changelog-cli
-      - name: install conventional-github-release
-        run: pnpm install -g conventional-github-releaser
       - name: Set up JDK 17
         uses: actions/setup-java@v3.3.0
         with:
@@ -65,7 +57,6 @@ jobs:
         run: cat <(echo -e "${{ secrets.PGP_SECRET_KEY }}") | gpg --batch --import
       - name: Release
         env:
-          CONVENTIONAL_GITHUB_RELEASER_TOKEN: ${{ secrets.GH_ADMIN_TOKEN }}
           GITHUB_USER: ${{ secrets.GH_USERNAME }}
           GITHUB_TOKEN: ${{ secrets.GH_ADMIN_TOKEN }}
           SONATYPE_USER: ${{ secrets.SONATYPE_USER }}
