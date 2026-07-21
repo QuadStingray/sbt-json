@@ -6,35 +6,35 @@ on:
       - 'main'
       - 'master'
   repository_dispatch:
-    types: [build]
+    types: [ build ]
 
 jobs:
   unit-test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [ '11', '17' ]
+        java: [ '17', '21' ]
     steps:
-      - uses: actions/checkout@v3.0.0
-      - name: Set up JDK ${{ matrix.Java }}
-        uses: actions/setup-java@v3.3.0
+      - uses: actions/checkout@main
+      - name: Set up JDK ${{ matrix.java }}
+        uses: coursier/setup-action@main
         with:
-          distribution: 'corretto'
-          java-version: ${{ matrix.java }}
+          jvm: corretto:${{ matrix.java }}
+          apps: sbt scala scalac
       - name: Run tests
-        run:  sbt test
+        run: sbt test
   scripted-test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [ '11', '17' ]
+        java: [ '17', '21' ]
     steps:
-      - uses: actions/checkout@v3.0.0
-      - name: Set up JDK ${{ matrix.Java }}
-        uses: actions/setup-java@v3.3.0
+      - uses: actions/checkout@main
+      - name: Set up JDK ${{ matrix.java }}
+        uses: coursier/setup-action@main
         with:
-          distribution: 'corretto'
-          java-version: ${{ matrix.java }}
+          jvm: corretto:${{ matrix.java }}
+          apps: sbt scala scalac
       - name: Run tests
         run: sbt ^scripted
   release:
@@ -44,20 +44,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Git Checkout
-        uses: actions/checkout@v3.0.0
+        uses: actions/checkout@main
         with:
           fetch-depth: 0
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3.3.0
-        with:
-          distribution: 'corretto'
-          java-version: '17'
+          token: ${{ secrets.GH_ADMIN_TOKEN }}
       - id: install-secret-key
         name: Install gpg secret key
         run: cat <(echo -e "${{ secrets.PGP_SECRET_KEY }}") | gpg --batch --import
+      - name: Set up JDK
+        uses: coursier/setup-action@main
+        with:
+          jvm: corretto:21
+          apps: sbt scala scalac
       - name: Release
         env:
-          GITHUB_USER: ${{ secrets.GH_USERNAME }}
+          GITHUB_USER: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GH_ADMIN_TOKEN }}
           SONATYPE_USER: ${{ secrets.SONATYPE_USER }}
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}

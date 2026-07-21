@@ -13,27 +13,27 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [ '11', '17' ]
+        java: [ '17', '21' ]
     steps:
-      - uses: actions/checkout@v3.0.0
-      - name: Set up JDK ${{ matrix.Java }}
-        uses: actions/setup-java@v3.3.0
+      - uses: actions/checkout@main
+      - name: Set up JDK ${{ matrix.java }}
+        uses: coursier/setup-action@main
         with:
-          distribution: 'corretto'
-          java-version: ${{ matrix.java }}
+          jvm: corretto:${{ matrix.java }}
+          apps: sbt scala scalac
       - name: Run tests
         run: sbt test
   scripted-test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [ '11', '17' ]
+        java: [ '17', '21' ]
     steps:
-      - uses: actions/checkout@v3.0.0
-      - name: Set up JDK ${{ matrix.Java }}
-        uses: actions/setup-java@v3.3.0
+      - uses: actions/checkout@main
+      - name: Set up JDK ${{ matrix.java }}
+        uses: coursier/setup-action@main
         with:
-          distribution: 'corretto'
-          java-version: ${{ matrix.java }}
+          jvm: corretto:${{ matrix.java }}
+          apps: sbt scala scalac
       - name: Run tests
         run: sbt ^scripted
