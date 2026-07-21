@@ -9,19 +9,19 @@ import scala.collection.mutable
 
 trait CirceParsingHelper {
 
-  implicit val DateFormat: Encoder[Date] with Decoder[Date] = new Encoder[Date] with Decoder[Date] {
+  implicit val DateFormat: Encoder[Date] & Decoder[Date] = new Encoder[Date] with Decoder[Date] {
     override def apply(a: Date): Json = Encoder.encodeString.apply(a.toInstant.toString)
 
     override def apply(c: HCursor): Result[Date] = Decoder.decodeString.map(s => new DateTime(s).toDate).apply(c)
   }
 
-  implicit val DateTimeFormat: Encoder[DateTime] with Decoder[DateTime] = new Encoder[DateTime] with Decoder[DateTime] {
+  implicit val DateTimeFormat: Encoder[DateTime] & Decoder[DateTime] = new Encoder[DateTime] with Decoder[DateTime] {
     override def apply(a: DateTime): Json = Encoder.encodeString.apply(a.toInstant.toString)
 
     override def apply(c: HCursor): Result[DateTime] = Decoder.decodeString.map(s => new DateTime(s)).apply(c)
   }
 
-  implicit val MapStringAnyFormat: Encoder[Map[String, Any]] with Decoder[Map[String, Any]] = new Encoder[Map[String, Any]] with Decoder[Map[String, Any]] {
+  implicit val MapStringAnyFormat: Encoder[Map[String, Any]] & Decoder[Map[String, Any]] = new Encoder[Map[String, Any]] with Decoder[Map[String, Any]] {
     override def apply(a: Map[String, Any]): Json = encodeMapStringAny(a)
 
     override def apply(c: HCursor): Result[Map[String, Any]] = Decoder.decodeMap[String, Any].apply(c)
@@ -31,7 +31,7 @@ trait CirceParsingHelper {
     override def apply(a: mutable.LinkedHashMap[String, Any]): Json = encodeLinkedMapStringAny(a)
   }
 
-  implicit val AnyFormat: Encoder[Any] with Decoder[Any] = new Encoder[Any] with Decoder[Any] {
+  implicit val AnyFormat: Encoder[Any] & Decoder[Any] = new Encoder[Any] with Decoder[Any] {
     override def apply(a: Any): Json = encodeAnyToJson(a)
 
     override def apply(c: HCursor): Result[Any] = {
@@ -39,16 +39,16 @@ trait CirceParsingHelper {
     }
   }
 
-  def encodeLinkedMapStringAny(a: mutable.LinkedHashMap[String, _]): Json = {
+  def encodeLinkedMapStringAny(a: mutable.LinkedHashMap[String, ?]): Json = {
     val jObject = Json.obj(
-      a.keySet.toList.map(key => (key, encodeAnyToJson(a(key)))): _*
+      a.keySet.toList.map(key => (key, encodeAnyToJson(a(key))))*
     )
     jObject
   }
 
   def encodeMapStringAny(a: Map[String, Any]): Json = {
     Json.obj(
-      a.keySet.toList.map(key => (key, encodeAnyToJson(a(key)))): _*
+      a.keySet.toList.map(key => (key, encodeAnyToJson(a(key))))*
     )
   }
 
@@ -99,8 +99,8 @@ trait CirceParsingHelper {
       case d: DateTime                         => Encoder.encodeString.apply(d.toInstant.toString)
       case m: Map[String, _]                   => encodeMapStringAny(m)
       case m: mutable.LinkedHashMap[String, _] => encodeLinkedMapStringAny(m)
-      case seq: Seq[_]                         => Json.arr(seq.map(e => encodeAnyToJson(e, deepth)): _*)
-      case set: Set[_]                         => Json.arr(set.map(e => encodeAnyToJson(e, deepth)).toList: _*)
+      case seq: Seq[_]                         => Json.arr(seq.map(e => encodeAnyToJson(e, deepth))*)
+      case set: Set[_]                         => Json.arr(set.map(e => encodeAnyToJson(e, deepth)).toList*)
       case product: Product =>
         val productElementNames = product.productIterator.toList
         val fieldMap = productElementNames

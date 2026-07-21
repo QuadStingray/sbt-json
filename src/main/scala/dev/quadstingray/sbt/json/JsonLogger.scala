@@ -3,7 +3,7 @@ package dev.quadstingray.sbt.json
 import com.typesafe.scalalogging.LazyLogging
 
 object JsonLogger extends LazyLogging {
-  var sbtLogger: sbt.Logger = _
+  var sbtLogger: sbt.Logger = null.asInstanceOf[sbt.Logger]
 
   def error(message: => String): Unit = {
     if (sbtLogger != null) {
