@@ -3,12 +3,12 @@ package dev.quadstingray.sbt.json
 import munit.FunSuite
 import org.joda.time.DateTime
 
-class JsonHandlerSuite extends FunSuite {
+class JsonHandlerSuite extends FunSuite with TestResourceHelper {
   val jsonHandler = new JsonHandler(
     List(
-      new sbt.File(getClass.getResource("/package.json").getPath),
-      new sbt.File(getClass.getResource("/second.json").getPath),
-      new sbt.File(getClass.getResource("/second.json").getPath)
+      resourceFile("/package.json"),
+      resourceFile("/second.json"),
+      resourceFile("/second.json")
     )
   )
 

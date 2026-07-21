@@ -3,8 +3,8 @@ package dev.quadstingray.sbt.json
 import munit.FunSuite
 import org.joda.time.DateTime
 
-class JsonSuite extends FunSuite {
-  val json: JsonFile = JsonFile(new sbt.File(getClass.getResource("/package.json").getPath))
+class JsonSuite extends FunSuite with TestResourceHelper {
+  val json: JsonFile = JsonFile(resourceFile("/package.json"))
 
   test("read String from simple json values from file") {
     assertEquals(json.stringValue("version"), "1.2.2.snapshot")
