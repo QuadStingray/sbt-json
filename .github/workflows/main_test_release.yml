@@ -56,12 +56,6 @@ jobs:
         with:
           jvm: corretto:21
           apps: sbt scala scalac
-      - name: Diagnose git fetch (temporary)
-        run: |
-          git remote -v
-          git fetch origin -v
-      - name: Diagnose sbt-release vcs checks (temporary)
-        run: sbt diagnose-vcs
       - name: Release
         env:
           GITHUB_USER: ${{ github.actor }}
@@ -73,4 +67,4 @@ jobs:
         run: |
           git config --global user.email "ci@quadstingray.dev"
           git config --global user.name "QuadStingray CI"
-          sbt -Dsbt.supershell=false ci-release
+          sbt -Dsbt.supershell=false "diagnose-vcs" "ci-release"
