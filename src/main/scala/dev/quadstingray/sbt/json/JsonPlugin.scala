@@ -10,11 +10,11 @@ object JsonPlugin extends AutoPlugin {
   override val requires: Plugins = plugins.JvmPlugin
 
   object autoImport {
-    lazy val jsonHandler = settingKey[JsonHandler]("JsonHandler for Usage in sbt-Files")
-    lazy val jsonFiles   = settingKey[Seq[File]]("List of Json-Files to read from.")
+    @transient lazy val jsonHandler = settingKey[JsonHandler]("JsonHandler for Usage in sbt-Files")
+    lazy val jsonFiles              = settingKey[Seq[File]]("List of Json-Files to read from.")
   }
 
-  override val projectSettings: Seq[Def.Setting[_]] = {
+  override val projectSettings: Seq[Def.Setting[?]] = {
     Seq(
       jsonFiles := Seq(),
       jsonHandler := {
