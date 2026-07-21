@@ -60,6 +60,8 @@ jobs:
         run: |
           git remote -v
           git fetch origin -v
+      - name: Diagnose sbt-release vcs checks (temporary)
+        run: sbt diagnose-vcs
       - name: Release
         env:
           GITHUB_USER: ${{ github.actor }}
