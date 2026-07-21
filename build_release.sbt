@@ -56,13 +56,27 @@ releaseProcess := {
     gitAddAllTask,
     commitReleaseVersion,
     tagRelease,
+    releaseStepCommandAndRemaining("+publishSigned"),
+    releaseStepCommand("sonaRelease"),
     setToMyNextVersion,
     gitAddAllTask,
     commitNextVersion,
-    pushChanges,
-    publishArtifacts
+    pushChanges
   )
 }
+
+Global / useGpgPinentry := true
+
+// Sonatype sunset the legacy OSSRH staging host in 2025; sonaRelease/localStaging are sbt's own
+// native replacement for publishing to the Central Portal (no sbt-sonatype/sbt-ci-release needed).
+// Snapshots publish straight to the Central Portal snapshot repo; releases go through local staging
+// (target/sona-staging) and get finalized by the sonaRelease step in releaseProcess above.
+ThisBuild / publishTo := {
+  if (isSnapshot.value) Some("central-snapshots".at("https://central.sonatype.com/repository/maven-snapshots/"))
+  else localStaging.value
+}
+
+credentials += Credentials("central.sonatype.com", "central.sonatype.com", System.getenv("SONATYPE_USER"), System.getenv("SONATYPE_PASSWORD"))
 
 packageOptions += {
   Package.ManifestAttributes(
