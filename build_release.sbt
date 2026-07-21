@@ -1,7 +1,6 @@
 import sbtrelease.ReleasePlugin.autoImport.ReleaseKeys.versions
 import sbtrelease.ReleasePlugin.autoImport.ReleaseTransformations._
 import sbtrelease.ReleasePlugin.runtimeVersion
-import dev.quadstingray.sbt.json.JsonFile
 
 import scala.sys.process._
 
@@ -22,10 +21,11 @@ val setToMyReleaseVersion = ReleaseStep(action = st => {
 
 def setMyVersion(version: String, state: State): Unit = {
   state.log.warn(s"Set Version in package.json  to $version")
-  val json       = JsonFile(file("package.json"))
-  val newVersion = version.replace("-SNAPSHOT", ".snapshot")
-  json.updateValue("version", newVersion)
-  json.write()
+  val packageJson = file("package.json")
+  val newVersion  = version.replace("-SNAPSHOT", ".snapshot")
+  val content     = IO.read(packageJson)
+  val updated     = content.replaceAll(""""version"\s*:\s*"[^"]+"""", s""""version": "$newVersion"""")
+  IO.write(packageJson, updated)
 }
 
 releaseNextCommitMessage := s"ci: update version after release"
@@ -42,7 +42,7 @@ commands += Command.command("ci-release")((state: State) => {
     state
   }
   else {
-    Command.process("release with-defaults", state)
+    Command.process("release with-defaults", state, _ => ())
   }
 })
 
@@ -56,8 +56,6 @@ releaseProcess := {
     gitAddAllTask,
     commitReleaseVersion,
     tagRelease,
-    releaseStepCommandAndRemaining("+publishSigned"),
-    releaseStepCommand("sonatypeBundleRelease"),
     setToMyNextVersion,
     gitAddAllTask,
     commitNextVersion,
@@ -65,18 +63,6 @@ releaseProcess := {
     publishArtifacts
   )
 }
-
-// add sonatype repository settings
-// snapshot versions publish to sonatype snapshot repository
-// other versions publish to sonatype staging repository
-publishTo := sonatypePublishToBundle.value
-
-credentials += Credentials("Sonatype Nexus Repository Manager", "oss.sonatype.org", System.getenv("SONATYPE_USER"), System.getenv("SONATYPE_PASSWORD"))
-credentials += Credentials("New Sonatype Nexus Repository Manager", "s01.oss.sonatype.org", System.getenv("SONATYPE_USER"), System.getenv("SONATYPE_PASSWORD"))
-
-Global / useGpgPinentry := true
-
-ThisBuild / sonatypeCredentialHost := "s01.oss.sonatype.org"
 
 packageOptions += {
   Package.ManifestAttributes(
