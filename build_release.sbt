@@ -31,35 +31,12 @@ def setMyVersion(version: String, state: State): Unit = {
 releaseNextCommitMessage := s"ci: update version after release"
 releaseCommitMessage     := s"ci: prepare release of version ${runtimeVersion.value}"
 
-// temporary: replicates sbt-release's checkUpstream/isBehindRemote git calls one by one, with full
-// exit code + stdout + stderr, to find which one fails silently inside the real release process.
-commands += Command.command("diagnose-vcs")((state: State) => {
-  def run(args: String*): (Int, String, String) = {
-    val out    = new StringBuilder
-    val err    = new StringBuilder
-    val logger = ProcessLogger(o => { out.append(o); out.append("\n"); }, e => { err.append(e); err.append("\n"); })
-    val code   = Process("git" +: args, file(".")) ! logger
-    (code, out.toString.trim, err.toString.trim)
-  }
-  def report(label: String, args: String*): (Int, String, String) = {
-    val (code, out, err) = run(args*)
-    state.log.info(s"[diagnose-vcs] $label -> exit=$code out=[$out] err=[$err]")
-    (code, out, err)
-  }
-
-  val (_, branchOut, _)  = report("symbolic-ref HEAD", "symbolic-ref", "HEAD")
-  val currentBranch      = branchOut.stripPrefix("refs/heads/")
-  val (_, remoteOut, _)  = report(s"config branch.$currentBranch.remote", "config", s"branch.$currentBranch.remote")
-  val (_, mergeOut, _)   = report(s"config branch.$currentBranch.merge", "config", s"branch.$currentBranch.merge")
-  val trackingBranch     = mergeOut.stripPrefix("refs/heads/")
-  report("fetch " + remoteOut, "fetch", remoteOut)
-  report(
-    s"rev-list $currentBranch..$remoteOut/$trackingBranch",
-    "rev-list",
-    s"$currentBranch..$remoteOut/$trackingBranch"
-  )
-  state
-})
+// Our own version comes from package.json, not sbt-release's own version.sbt, so the repo's version
+// is never literally "-SNAPSHOT"-suffixed the way sbt-release's default Bump.Next expects (it checks
+// version.isSnapshot and aborts with "Expected snapshot version" otherwise). Bump.NextStable skips
+// that check and just strips any qualifier for the release version, matching the mongodb-driver /
+// quartz-manager convention of pushing a bare "X.Y.Z" in package.json to trigger a real release.
+releaseVersionBump := sbtrelease.Version.Bump.NextStable
 
 commands += Command.command("ci-release")((state: State) => {
   val lowerCaseVersion = version.value.toLowerCase

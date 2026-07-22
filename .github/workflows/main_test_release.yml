@@ -67,4 +67,4 @@ jobs:
         run: |
           git config --global user.email "ci@quadstingray.dev"
           git config --global user.name "QuadStingray CI"
-          sbt -Dsbt.supershell=false "diagnose-vcs" "ci-release"
+          sbt ci-release
