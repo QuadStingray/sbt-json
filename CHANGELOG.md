@@ -28,6 +28,25 @@
 
 * Add missing `updateValue` methode to JsonHandler ([c22e52a](https://github.com/QuadStingray/sbt-json/commit/c22e52ad9cd0cc787f8e018aa050c9f915ad3846))
 
+## [v0.8.0] - 2026-07-22
+### :sparkles: New Features
+- [`a7782bf`](https://github.com/QuadStingray/sbt-json/commit/a7782bfbf0868a506cdbae2f6b85719caa0e365c) - optional values for json values have no exception now *(commit by [@QuadStingray](https://github.com/QuadStingray))*
+
+### :bug: Bug Fixes
+- [`bed7dcd`](https://github.com/QuadStingray/sbt-json/commit/bed7dcd7e9833db7cfdec7b0a19acf4fec28f856) - exclude jsonHandler from sbt 2.0 task-cache inputs *(commit by [@QuadStingray](https://github.com/QuadStingray))*
+- [`8b59fe6`](https://github.com/QuadStingray/sbt-json/commit/8b59fe6d477c018ac69ca90206ab0210850572d5) - fix multi-command sbt syntax, version bump strategy, and scalafmt dialect *(commit by [@QuadStingray](https://github.com/QuadStingray))*
+
+### :recycle: Refactors
+- [`61b0aea`](https://github.com/QuadStingray/sbt-json/commit/61b0aea69391d937432bccaca63b7cba26757d4f) - replace deprecated Scala 3 syntax *(commit by [@QuadStingray](https://github.com/QuadStingray))*
+
+### :white_check_mark: Tests
+- [`d0194cd`](https://github.com/QuadStingray/sbt-json/commit/d0194cdce0ce5fe9fc1357d31827118dab2e2ad5) - adapt test suites for munit 1.x and sbt 2.0 resource loading *(commit by [@QuadStingray](https://github.com/QuadStingray))*
+
+### :wrench: Chores
+- [`7058050`](https://github.com/QuadStingray/sbt-json/commit/705805074bf9f2a7db32f5e97a73cd8c30ca1fc2) - **dependencies**: 5 dependency updates for sbt-json *(commit by [@QuadStingray](https://github.com/QuadStingray))*
+- [`018c5d9`](https://github.com/QuadStingray/sbt-json/commit/018c5d9608ab55696474efdd7c2202a3325fe063) - **dependencies**: Found 4 dependency updates for plugins and added SBT 1.9.x to tests *(commit by [@QuadStingray](https://github.com/QuadStingray))*
+
+
 ## [0.1.0-SNAPSHOT](https://github.com/QuadStingray/sbt-json/compare/3073436cbd26825c52752ea2a84395302809aa66...v0.1.0-SNAPSHOT) (2022-10-25)
 
 
@@ -46,3 +65,4 @@
 * Replace Json4s with Circe ([e4c2ecb](https://github.com/QuadStingray/sbt-json/commit/e4c2ecb9fca49111b4a28361876c8e33214e75ba))
 * write to json files ([e4cb49e](https://github.com/QuadStingray/sbt-json/commit/e4cb49ebc0a38b458c0a85b6dc9449d1ea641b76))
 
+[v0.8.0]: https://github.com/QuadStingray/sbt-json/compare/v0.7.1...v0.8.0
