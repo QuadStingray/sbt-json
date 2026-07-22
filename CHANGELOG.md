@@ -28,6 +28,11 @@
 
 * Add missing `updateValue` methode to JsonHandler ([c22e52a](https://github.com/QuadStingray/sbt-json/commit/c22e52ad9cd0cc787f8e018aa050c9f915ad3846))
 
+## [v0.8.1] - 2026-07-22
+### :bug: Bug Fixes
+- [`8007d3f`](https://github.com/QuadStingray/sbt-json/commit/8007d3fc00536fc257c047ac58b104b012f1aba8) - use ^publishSigned to cross-build both sbt lines on release *(commit by [@QuadStingray](https://github.com/QuadStingray))*
+
+
 ## [v0.8.0] - 2026-07-22
 ### :sparkles: New Features
 - [`a7782bf`](https://github.com/QuadStingray/sbt-json/commit/a7782bfbf0868a506cdbae2f6b85719caa0e365c) - optional values for json values have no exception now *(commit by [@QuadStingray](https://github.com/QuadStingray))*
@@ -66,3 +71,4 @@
 * write to json files ([e4cb49e](https://github.com/QuadStingray/sbt-json/commit/e4cb49ebc0a38b458c0a85b6dc9449d1ea641b76))
 
 [v0.8.0]: https://github.com/QuadStingray/sbt-json/compare/v0.7.1...v0.8.0
+[v0.8.1]: https://github.com/QuadStingray/sbt-json/compare/v0.8.0...v0.8.1
